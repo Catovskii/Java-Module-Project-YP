@@ -10,7 +10,7 @@ public class Main {
         int persons;
         while (true) {
             try {
-                System.out.println("Введите количество людей:");
+                System.out.println("На сколько человек разделить счет?");
                 persons = sc.nextInt();
                 if (persons > 1) {
                     sc.nextLine(); // Под вопросом почему без него пропускает следующий ввод
@@ -19,7 +19,7 @@ public class Main {
                     System.out.println("Неправильное количество людей!");
                 }
             } catch (Exception e) {
-                System.out.println("Введите целое число!");
+                System.out.println("Введите целое число!\n"); //Перенос строки для красоты
                 sc.nextLine(); // Под вопросом почему без него пропускает следующий ввод
             }
         }
@@ -30,19 +30,23 @@ public class Main {
 
         while (true) {
 
-            System.out.println("Введите название продукта:");
+            System.out.println("\nВведите название продукта:"); //Перенос строки для красоты
             String name = sc.nextLine();
 
             while (true) {
                 System.out.println("Введите цену продукта в формате [рубли.копейки]:");
                 try {
                     // По причине того что цену в задаче просят вводить через "." а консолька этого
-                    // не понимает
-                    String priceLine = sc.nextLine();
-                    double price = Double.parseDouble(priceLine);
+                    // не понимает и хочет ввода через ","
+                    String priceString  = sc.nextLine();
+                    double price = Double.parseDouble(priceString);
+                    if (price  <=  0)  {
+                        throw new NumberFormatException();
+                    }
+                    
                     // Добавляем продукт
                     products.addProduct(name, price);
-                    System.out.println("Продукт добавлен!");
+                    System.out.println("Продукт добавлен!\n"); //Перенос строки для красоты
                     break;
                 } catch (NumberFormatException e) {
                     System.out.println("Неправильно указана цена!");
@@ -52,11 +56,13 @@ public class Main {
             // Проверка желания добавить еще
             System.out.println("Хотите добавить еще один продукт?");
             String nextOrEnd = sc.nextLine();
-            if (nextOrEnd.equalsIgnoreCase("Завершить")) {
+            if (nextOrEnd.equalsIgnoreCase("End")) {
                 break;
             }
 
         }
+
+        sc.close(); // Для приличия закроем
 
         // Выводим список товаров и сумму взноса
         products.printProducts();
@@ -93,18 +99,19 @@ class Products {
 
     public void getTotal(int persons) {
         String rub;
-        double sum = getSum();
-        rub = switch ((int) Math.floor(sum)) {
+        double payment = getSum()/persons;
+        rub = switch ((int)(Math.floor(payment))%10)    // Сумма может быть и 123.04 Нас интересует только цифра 3.
+        {
             case 1 -> "рубль";
             case 2, 3, 4 -> "рубля";
             default -> "рублей";
         };
-        System.out.println("Вы должны внести: " + String.format("%.2f", sum / persons) + "  " + rub);
+        System.out.println("Вы должны внести: " + String.format("%.2f", payment) + "  " + rub);
 
     }
 
     public void printProducts() {
-        System.out.println("Добавленные товары:");
+        System.out.println("\nДобавленные товары:"); //Перенос строки для красоты
         for (Product product : products) {
             System.out.println(product.name);
         }
