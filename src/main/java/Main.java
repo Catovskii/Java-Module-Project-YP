@@ -100,12 +100,15 @@ class Products {
     public void getTotal(int persons) {
         String rub;
         double payment = getSum()/persons;
-        rub = switch ((int)(Math.floor(payment))%10)    // Сумма может быть и 123.04 Нас интересует только цифра 3.
-        {
-            case 1 -> "рубль";
-            case 2, 3, 4 -> "рубля";
-            default -> "рублей";
-        };
+        if (payment > 10 && payment <20)  { rub= "рублей"; } // Добавлен вариант с десятками
+            else {
+            rub = switch ((int)(Math.floor(payment))%10)    // Сумма может быть и 123.04 Нас интересует только цифра 3.
+            {   
+                case 1 -> "рубль";
+                case 2, 3, 4 -> "рубля";
+                default -> "рублей";
+            };
+            }
         System.out.println("Вы должны внести: " + String.format("%.2f", payment) + "  " + rub);
 
     }
