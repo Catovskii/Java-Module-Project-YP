@@ -57,7 +57,7 @@ public class Main {
             // Проверка желания добавить еще
             System.out.println("Хотите добавить еще один продукт?");
             String nextOrEnd = sc.nextLine();
-            if (nextOrEnd.equalsIgnoreCase("End")) {
+            if (nextOrEnd.equalsIgnoreCase("Завершить")) {
                 break;
             }
 
