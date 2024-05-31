@@ -1,5 +1,6 @@
-import java.util.ArrayList;
 import java.util.Scanner;
+
+import calc.Products;
 
 public class Main {
     public static void main(String[] args) {
@@ -56,7 +57,7 @@ public class Main {
             // Проверка желания добавить еще
             System.out.println("Хотите добавить еще один продукт?");
             String nextOrEnd = sc.nextLine();
-            if (nextOrEnd.equalsIgnoreCase("Завершить")) {
+            if (nextOrEnd.equalsIgnoreCase("End")) {
                 break;
             }
 
@@ -71,52 +72,7 @@ public class Main {
     }
 }
 
-class Products {
 
-    private static class Product {
-        String name;
-        double price;
 
-        Product(String name, double price) {
-            this.name = name;
-            this.price = price;
-        }
-    }
 
-    ArrayList<Product> products = new ArrayList<>();
 
-    public void addProduct(String name, double price) {
-        products.add(new Product(name, price));
-    }
-
-    private double getSum() {
-        double sum = 0;
-        for (Product product : products) {
-            sum += product.price;
-        }
-        return sum;
-    }
-
-    public void getTotal(int persons) {
-        String rub;
-        double payment = getSum()/persons;
-        if (payment > 10 && payment <20)  { rub= "рублей"; } // Добавлен вариант с десятками
-            else {
-            rub = switch ((int)(Math.floor(payment))%10)    // Сумма может быть и 123.04 Нас интересует только цифра 3.
-            {   
-                case 1 -> "рубль";
-                case 2, 3, 4 -> "рубля";
-                default -> "рублей";
-            };
-            }
-        System.out.println("Вы должны внести: " + String.format("%.2f", payment) + "  " + rub);
-
-    }
-
-    public void printProducts() {
-        System.out.println("\nДобавленные товары:"); //Перенос строки для красоты
-        for (Product product : products) {
-            System.out.println(product.name);
-        }
-    }
-}
